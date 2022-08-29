@@ -3,12 +3,110 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Page title</title>
+    <title>goit-js-hw-11</title>
     <link rel="stylesheet" href="./sass/index.scss" />
     <script type="module" src="./index.js"></script>
   </head>
   <body>
-    <!-- ❗️❗️❗️ Add partials like so for every page -->
-    <include src="./partials/example.html"></include>
+    <header class="header">
+      <form class="search-form" id="search-form">
+        <input
+          type="text"
+          name="searchQuery"
+          autocomplete="off"
+          placeholder="Search images..."
+        />
+        <button type="submit">Search</button>
+      </form>
+    </header>
+    <main class="main">
+      <div class="gallery">
+        <!-- Карточки изображений -->
+        <div class="photo-card">
+          <img
+            src="https://cdn.pixabay.com/photo/2017/02/20/18/03/cat-2083492_960_720.jpg"
+            alt="Cat"
+            loading="lazy"
+          />
+          <div class="info">
+            <p class="info-item">
+              <b>Likes</b>
+            </p>
+            <p class="info-item">
+              <b>Views</b>
+            </p>
+            <p class="info-item">
+              <b>Comments</b>
+            </p>
+            <p class="info-item">
+              <b>Downloads</b>
+            </p>
+          </div>
+        </div>
+        <div class="photo-card">
+          <img
+            src="https://cdn.pixabay.com/photo/2017/02/20/18/03/cat-2083492_960_720.jpg"
+            alt="Cat"
+            loading="lazy"
+          />
+          <div class="info">
+            <p class="info-item">
+              <b>Likes</b>
+            </p>
+            <p class="info-item">
+              <b>Views</b>
+            </p>
+            <p class="info-item">
+              <b>Comments</b>
+            </p>
+            <p class="info-item">
+              <b>Downloads</b>
+            </p>
+          </div>
+        </div>
+        <div class="photo-card">
+          <img
+            src="https://cdn.pixabay.com/photo/2017/02/20/18/03/cat-2083492_960_720.jpg"
+            alt="Cat"
+            loading="lazy"
+          />
+          <div class="info">
+            <p class="info-item">
+              <b>Likes</b>
+            </p>
+            <p class="info-item">
+              <b>Views</b>
+            </p>
+            <p class="info-item">
+              <b>Comments</b>
+            </p>
+            <p class="info-item">
+              <b>Downloads</b>
+            </p>
+          </div>
+        </div>
+        <div class="photo-card">
+          <img
+            src="https://cdn.pixabay.com/photo/2017/02/20/18/03/cat-2083492_960_720.jpg"
+            alt="Cat"
+            loading="lazy"
+          />
+          <div class="info">
+            <p class="info-item">
+              <b>Likes</b>
+            </p>
+            <p class="info-item">
+              <b>Views</b>
+            </p>
+            <p class="info-item">
+              <b>Comments</b>
+            </p>
+            <p class="info-item">
+              <b>Downloads</b>
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
   </body>
 </html>
