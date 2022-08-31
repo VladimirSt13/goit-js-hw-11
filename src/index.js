@@ -4,21 +4,19 @@ import { APIGetPhoto } from './js/api-photo';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
-// api key 12767036-1273f5679a6a0002977b87267
 const searchForm = document.querySelector('#search-form');
 const gallery = document.querySelector('.gallery');
 const submitBtn = document.querySelector('#search-form button');
 const loadMoreBtn = document.querySelector('.load-more');
-
-console.log(loadMoreBtn);
+const scrollDown = document.querySelector('.scroll-to-down');
 
 let searchQuery;
-
-loadMoreBtn.classList.add('is-hidden');
 
 searchForm.addEventListener('submit', onSearch);
 
 loadMoreBtn.addEventListener('click', loadMore);
+
+scrollDown.addEventListener('click', smoothScroll);
 
 const lightbox = new SimpleLightbox('.gallery .gallery__item', {
   captionsData: 'alt',
@@ -49,9 +47,12 @@ function onSearch(event) {
       appendPhotos(hits);
       lightbox.refresh();
       changeVisibilityLoadMoreBtn(isNextPage);
-      smoothScroll();
       submitBtn.disabled = false;
+
+      scrollDown.classList.contains('is-hidden') &&
+        scrollDown.classList.remove('is-hidden');
     })
+
     .catch(console.error);
 }
 
@@ -63,7 +64,7 @@ function loadMore() {
     .then(({ hits, isNextPage }) => {
       appendPhotos(hits);
       lightbox.refresh();
-      smoothScroll();
+      smoothScroll(1);
       changeVisibilityLoadMoreBtn(isNextPage);
       loadMoreBtn.disabled = false;
       loadMoreBtn.textContent = 'Load more';
@@ -134,7 +135,7 @@ function smoothScroll() {
     gallery.firstElementChild.getBoundingClientRect();
 
   window.scrollBy({
-    top: cardHeight * 10 + 120,
+    top: cardHeight * 1 + 10,
     behavior: 'smooth',
   });
 }
