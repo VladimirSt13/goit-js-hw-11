@@ -123,7 +123,7 @@ function smoothScroll() {
   console.log(gallery.firstElementChild);
 
   window.scrollBy({
-    top: cardHeight * 10 + 60,
+    top: cardHeight * 10 + 120,
     behavior: 'smooth',
   });
 }
