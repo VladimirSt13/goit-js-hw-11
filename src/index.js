@@ -7,7 +7,10 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 // api key 12767036-1273f5679a6a0002977b87267
 const searchForm = document.querySelector('#search-form');
 const gallery = document.querySelector('.gallery');
+const submitBtn = document.querySelector('#search-form button');
 const loadMoreBtn = document.querySelector('.load-more');
+
+console.log(loadMoreBtn);
 
 let searchQuery;
 
@@ -27,11 +30,15 @@ function onSearch(event) {
   event.preventDefault();
   clearGallery();
 
+  loadMoreBtn.classList.add('is-hidden');
+
+  submitBtn.disabled = true;
+
   searchQuery = event.currentTarget.elements.searchQuery.value;
+
   APIGetPhoto.resetPage();
   APIGetPhoto.getPhoto(searchQuery)
     .then(({ hits, total, isNextPage }) => {
-      console.log(hits.length);
       if (hits.length === 0) {
         Notify.failure(
           'Sorry, there are no images matching your search query. Please try again.'
@@ -43,18 +50,23 @@ function onSearch(event) {
       lightbox.refresh();
       changeVisibilityLoadMoreBtn(isNextPage);
       smoothScroll();
+      submitBtn.disabled = false;
     })
     .catch(console.error);
 }
 
 function loadMore() {
+  loadMoreBtn.disabled = true;
+  loadMoreBtn.textContent = 'Loading...';
+
   APIGetPhoto.getPhoto(searchQuery)
     .then(({ hits, isNextPage }) => {
       appendPhotos(hits);
       lightbox.refresh();
       smoothScroll();
-
       changeVisibilityLoadMoreBtn(isNextPage);
+      loadMoreBtn.disabled = false;
+      loadMoreBtn.textContent = 'Load more';
     })
     .catch(console.error);
 }
@@ -120,7 +132,6 @@ function markupData(hits) {
 function smoothScroll() {
   const { height: cardHeight } =
     gallery.firstElementChild.getBoundingClientRect();
-  console.log(gallery.firstElementChild);
 
   window.scrollBy({
     top: cardHeight * 10 + 120,
