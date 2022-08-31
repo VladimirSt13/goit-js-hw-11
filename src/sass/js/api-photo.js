@@ -13,7 +13,7 @@ const instance = axios.create({
 
 export const APIGetPhoto = {
   page: 1,
-  per_page: 20,
+  per_page: 40,
   getPhoto(searchQuery) {
     return instance
       .get(`?&q=${searchQuery}&page=${this.page}&per_page=${this.per_page}`)
