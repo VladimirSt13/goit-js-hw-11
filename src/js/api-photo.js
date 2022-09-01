@@ -14,18 +14,18 @@ const instance = axios.create({
 export const APIGetPhoto = {
   page: 1,
   per_page: 40,
-  getPhoto(searchQuery) {
-    return instance
-      .get(`?&q=${searchQuery}&page=${this.page}&per_page=${this.per_page}`)
-      .then(({ data: { hits, total } }) => {
-        this.page += 1;
-        return {
-          hits,
-          total,
-          isNextPage: this.page <= Math.ceil(total / this.per_page),
-        };
-      })
-      .catch(console.error);
+  async getPhoto(searchQuery) {
+    const {
+      data: { hits, total },
+    } = await instance.get(
+      `?&q=${searchQuery}&page=${this.page}&per_page=${this.per_page}`
+    );
+    this.page += 1;
+    return {
+      hits,
+      total,
+      isNextPage: this.page <= Math.ceil(total / this.per_page),
+    };
   },
   resetPage() {
     this.page = 1;

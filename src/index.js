@@ -24,7 +24,7 @@ const lightbox = new SimpleLightbox('.gallery .gallery__item', {
   captionDelay: 250,
 });
 
-function onSearch(event) {
+async function onSearch(event) {
   event.preventDefault();
   clearGallery();
 
@@ -38,25 +38,28 @@ function onSearch(event) {
   APIGetPhoto.resetPage();
 
   if (searchQuery) {
-    APIGetPhoto.getPhoto(searchQuery)
-      .then(({ hits, total, isNextPage }) => {
-        if (hits.length === 0) {
-          Notify.failure(
-            'Sorry, there are no images matching your search query. Please try again.'
-          );
-          !scrollDown.classList.contains('is-hidden') &&
-            scrollDown.classList.add('is-hidden');
-        } else {
-          Notify.success(`Hooray! We found ${total} images.`);
-          changeVisibilityLoadMoreBtn(isNextPage);
-          scrollDown.classList.contains('is-hidden') &&
-            scrollDown.classList.remove('is-hidden');
-          appendPhotos(hits);
-          lightbox.refresh();
-        }
-        submitBtn.disabled = false;
-      })
-      .catch(console.error);
+    try {
+      const { hits, total, isNextPage } = await APIGetPhoto.getPhoto(
+        searchQuery
+      );
+      if (hits.length === 0) {
+        Notify.failure(
+          'Sorry, there are no images matching your search query. Please try again.'
+        );
+        !scrollDown.classList.contains('is-hidden') &&
+          scrollDown.classList.add('is-hidden');
+      } else {
+        Notify.success(`Hooray! We found ${total} images.`);
+        changeVisibilityLoadMoreBtn(isNextPage);
+        scrollDown.classList.contains('is-hidden') &&
+          scrollDown.classList.remove('is-hidden');
+        appendPhotos(hits);
+        lightbox.refresh();
+      }
+      submitBtn.disabled = false;
+    } catch (error) {
+      console.error(error);
+    }
   } else {
     event.currentTarget.elements.searchQuery.value = '';
     submitBtn.disabled = false;
