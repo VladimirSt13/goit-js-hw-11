@@ -32,28 +32,37 @@ function onSearch(event) {
 
   submitBtn.disabled = true;
 
-  searchQuery = event.currentTarget.elements.searchQuery.value;
+  searchQuery = event.currentTarget.elements.searchQuery.value.trim();
+  console.log(searchQuery);
 
   APIGetPhoto.resetPage();
-  APIGetPhoto.getPhoto(searchQuery)
-    .then(({ hits, total, isNextPage }) => {
-      if (hits.length === 0) {
-        Notify.failure(
-          'Sorry, there are no images matching your search query. Please try again.'
-        );
-      }
-      Notify.success(`Hooray! We found ${total} images.`);
 
-      appendPhotos(hits);
-      lightbox.refresh();
-      changeVisibilityLoadMoreBtn(isNextPage);
-      submitBtn.disabled = false;
-
-      scrollDown.classList.contains('is-hidden') &&
-        scrollDown.classList.remove('is-hidden');
-    })
-
-    .catch(console.error);
+  if (searchQuery) {
+    APIGetPhoto.getPhoto(searchQuery)
+      .then(({ hits, total, isNextPage }) => {
+        if (hits.length === 0) {
+          Notify.failure(
+            'Sorry, there are no images matching your search query. Please try again.'
+          );
+          !scrollDown.classList.contains('is-hidden') &&
+            scrollDown.classList.add('is-hidden');
+        } else {
+          Notify.success(`Hooray! We found ${total} images.`);
+          changeVisibilityLoadMoreBtn(isNextPage);
+          scrollDown.classList.contains('is-hidden') &&
+            scrollDown.classList.remove('is-hidden');
+          appendPhotos(hits);
+          lightbox.refresh();
+        }
+        submitBtn.disabled = false;
+      })
+      .catch(console.error);
+  } else {
+    event.currentTarget.elements.searchQuery.value = '';
+    submitBtn.disabled = false;
+    !scrollDown.classList.contains('is-hidden') &&
+      scrollDown.classList.add('is-hidden');
+  }
 }
 
 function loadMore() {
@@ -78,6 +87,7 @@ function changeVisibilityLoadMoreBtn(param) {
     return;
   }
   loadMoreBtn.classList.add('is-hidden');
+  scrollDown.classList.add('is-hidden');
   Notify.success("We're sorry, but you've reached the end of search results.");
 }
 
