@@ -68,20 +68,21 @@ async function onSearch(event) {
   }
 }
 
-function loadMore() {
+async function loadMore() {
   loadMoreBtn.disabled = true;
   loadMoreBtn.textContent = 'Loading...';
 
-  APIGetPhoto.getPhoto(searchQuery)
-    .then(({ hits, isNextPage }) => {
-      appendPhotos(hits);
-      lightbox.refresh();
-      smoothScroll(1);
-      changeVisibilityLoadMoreBtn(isNextPage);
-      loadMoreBtn.disabled = false;
-      loadMoreBtn.textContent = 'Load more';
-    })
-    .catch(console.error);
+  try {
+    const { hits, isNextPage } = await APIGetPhoto.getPhoto(searchQuery);
+    appendPhotos(hits);
+    lightbox.refresh();
+    smoothScroll(1);
+    changeVisibilityLoadMoreBtn(isNextPage);
+    loadMoreBtn.disabled = false;
+    loadMoreBtn.textContent = 'Load more';
+  } catch (erorr) {
+    console.error(error);
+  }
 }
 
 function changeVisibilityLoadMoreBtn(param) {
